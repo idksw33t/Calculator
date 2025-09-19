@@ -28,6 +28,11 @@ public class Calculator {
     JLabel displayLabel = new JLabel();
     JPanel displayPanel = new JPanel();
     JPanel buttonsPanel = new JPanel();
+    
+    // A = number 1, B = number 2
+    String A = "0";
+    String operator = null;
+    String B = null;
 
     public Calculator() {
         frame.setVisible(true);
@@ -59,6 +64,7 @@ public class Calculator {
             button.setText(buttonValue);
             button.setFocusable(false);
             button.setBorder(new LineBorder(customBlack));
+
             if (Arrays.asList(topSymbols).contains(buttonValue))  {
             button.setBackground(customLightGray);
             button.setForeground(customBlack);
@@ -81,11 +87,24 @@ public class Calculator {
 
                     }
                     else if (Arrays.asList(topSymbols).contains(buttonValue))   {
-                        
+                        if (buttonValue == "AC") {
+                            clearAll();
+                            displayLabel.setText("0");
+                        }
+                        else if (buttonValue == "+/-") {
+                            double numDisplay = Double.parseDouble(displayLabel.getText());
+                            numDisplay *= -1;
+                            displayLabel.setText(removeZeroDecimal(numDisplay));
+                        }
+                        else if (buttonValue == "%") {
+
+                        }
                     }
                     else { //digits or .
                         if (buttonValue == ".") {
-
+                            if (!displayLabel.getText().contains(buttonValue)) {
+                                displayLabel.setText(displayLabel.getText() + buttonValue);
+                            }
                         }
                         else if ("0123456789".contains(buttonValue)) {
                             if (displayLabel.getText() == "0") {
@@ -99,5 +118,18 @@ public class Calculator {
                 }
             });
         }
+    }
+
+    void clearAll() {
+        A = "0";
+        operator = null;
+        B = null;
+    }
+
+    String removeZeroDecimal(double numDisplay) {
+        if (numDisplay % 1 == 0) {
+            return  Integer.toString((int) numDisplay);
+        }
+        return Double.toString(numDisplay);
     }
 }
